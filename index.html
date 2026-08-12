@@ -317,6 +317,28 @@
     position:absolute; left:0; right:0; bottom:0; z-index:10;
     display:flex; align-items:center; gap:12px; padding:10px 14px;
     background:linear-gradient(0deg, rgba(0,0,0,.6), rgba(0,0,0,0));
+    opacity:0; pointer-events:none; transition:opacity .25s ease;
+  }
+  .stage:hover .controls,
+  .stage:focus-within .controls{
+    opacity:1; pointer-events:auto;
+  }
+
+  .stage:fullscreen,
+  .stage:-webkit-full-screen {
+    width:100vw;
+    height:100vh;
+    max-width:none;
+    aspect-ratio:auto;
+    border-radius:0;
+    box-shadow:none;
+    border:none;
+  }
+  .stage:fullscreen .slide,
+  .stage:-webkit-full-screen .slide {
+    max-width:1600px;
+    margin-left:auto;
+    margin-right:auto;
   }
   .ctrl-btn{
     width:30px; height:30px; border-radius:50%; border:none; background:rgba(255,255,255,.16);
@@ -731,6 +753,7 @@
     <button class="ctrl-btn" id="nextBtn" aria-label="Next slide"></button>
     <div class="progress-track" id="progressTrack"></div>
     <button class="ctrl-btn" id="muteBtn" aria-label="Mute narration"></button>
+    <button class="ctrl-btn" id="fullscreenBtn" aria-label="Full screen"></button>
     <div class="counter" id="counter">1 / 11</div>
   </div>
 
@@ -771,6 +794,8 @@
     replay:'<svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 5V1L7 6l5 5V7a5 5 0 1 1-4.9 6H5.02A7 7 0 1 0 12 5z" fill="currentColor"/></svg>',
     sound:'<svg viewBox="0 0 24 24" width="13" height="13"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16.2 9a4.2 4.2 0 010 6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>',
     mute:'<svg viewBox="0 0 24 24" width="13" height="13"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><line x1="15.5" y1="9" x2="20.5" y2="15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="20.5" y1="9" x2="15.5" y2="15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+    fullscreen:'<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/></svg>',
+    exitFullscreen:'<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4v4H4M16 4v4h4M8 20v-4H4M16 20v-4h4"/></svg>',
     prev:'<svg viewBox="0 0 24 24" width="13" height="13"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     next:'<svg viewBox="0 0 24 24" width="13" height="13"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'
   };
@@ -921,11 +946,43 @@
   const counterEl = document.getElementById('counter');
   const posterEl = document.getElementById('poster');
   const posterBtn = document.getElementById('posterBtn');
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
 
   prevBtn.innerHTML = ICONS.prev;
   nextBtn.innerHTML = ICONS.next;
   playBtn.innerHTML = ICONS.play;
   muteBtn.innerHTML = ICONS.sound;
+  if(fullscreenBtn){
+    fullscreenBtn.innerHTML = ICONS.fullscreen;
+  }
+
+  function isFullscreen(){
+    return !!(document.fullscreenElement || document.webkitFullscreenElement);
+  }
+
+  function toggleFullscreen(){
+    if(!isFullscreen()){
+      if(stageEl.requestFullscreen){
+        stageEl.requestFullscreen().catch(()=>{});
+      } else if(stageEl.webkitRequestFullscreen){
+        stageEl.webkitRequestFullscreen();
+      }
+    } else {
+      if(document.exitFullscreen){
+        document.exitFullscreen().catch(()=>{});
+      } else if(document.webkitExitFullscreen){
+        document.webkitExitFullscreen();
+      }
+    }
+  }
+
+  function updateFullscreenUI(){
+    const active = isFullscreen();
+    if(fullscreenBtn){
+      fullscreenBtn.innerHTML = active ? ICONS.exitFullscreen : ICONS.fullscreen;
+      fullscreenBtn.setAttribute('aria-label', active ? 'Exit full screen' : 'Full screen');
+    }
+  }
 
   let current = -1;
   let playing = false;
@@ -1214,6 +1271,11 @@
     muteBtn.innerHTML = muted ? ICONS.mute : ICONS.sound;
     muteBtn.setAttribute('aria-label', muted ? 'Unmute narration' : 'Mute narration');
   });
+  if(fullscreenBtn){
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+  }
+  document.addEventListener('fullscreenchange', updateFullscreenUI);
+  document.addEventListener('webkitfullscreenchange', updateFullscreenUI);
 
   stageEl.addEventListener('click', (e)=>{
     if(e.target.closest('.controls') || e.target.closest('.poster') || e.target.closest('a')) return;
