@@ -1,0 +1,6 @@
+{
+  "name": "Tempo Explainer",
+  "description": "An 11-slide narrated explainer video for Tempo.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
