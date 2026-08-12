@@ -12,19 +12,20 @@
     --bg:#F6F3EC;
     --paper:#FFFFFF;
     --ink:#15181C;
-    --muted:#7A7566;
+    --muted:#524E43;
     --line:#E1DCCC;
     --red:#E0402C;
     --blue:#2B57E8;
     --blue-soft:#DCE5FC;
     --dark:#13151A;
-    --dark-muted:#9AA0AC;
-    --dark-line:rgba(255,255,255,.14);
+    --dark-muted:#C2C8D6;
+    --dark-line:rgba(255,255,255,.20);
     --bp:#0E1F52;
-    --bp-line:rgba(130,168,255,.32);
+    --bp-line:rgba(160,198,255,.45);
     --bp-text:#EAF0FF;
     --font-head:'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
     --font-mono:'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --ease-tempo: cubic-bezier(0.16, 1, 0.3, 1);
   }
   *{box-sizing:border-box;}
   html,body{margin:0; padding:0;}
@@ -39,11 +40,11 @@
   }
   .page-head{ text-align:center; max-width:640px; }
   .page-head .eyebrow{
-    font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase;
-    color:var(--red); margin-bottom:6px; font-weight:700;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--red); margin-bottom:6px; font-weight:600;
   }
   .page-head h1{ font-size:clamp(20px,3vw,26px); margin:0 0 4px; font-weight:900; letter-spacing:-.01em;}
-  .page-head p{ margin:0; color:#5B5748; font-size:14px; }
+  .page-head p{ margin:0; color:#524E43; font-size:14px; }
 
   .stage-wrap{ width:100%; max-width:1040px; }
   .stage{
@@ -63,7 +64,7 @@
     padding:clamp(22px,5%,58px);
     padding-bottom:clamp(56px,9%,72px);
     opacity:0; transform:translateY(16px);
-    transition:opacity .4s ease, transform .4s ease;
+    transition:opacity .35s ease, transform .35s ease;
     pointer-events:none;
   }
   .slide.active{ opacity:1; transform:translateY(0); pointer-events:auto; }
@@ -77,31 +78,31 @@
   }
 
   .kicker{
-    font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--red); font-weight:700; display:flex; align-items:center; gap:9px;
+    font-family:var(--font-mono); font-size:clamp(11px, 1.25vw, 12.5px); letter-spacing:.18em; text-transform:uppercase;
+    color:var(--red); font-weight:600; display:flex; align-items:center; gap:10px;
   }
-  .slide.dark .kicker, .slide.blueprint .kicker{ color:#FF6E56; }
+  .slide.dark .kicker, .slide.blueprint .kicker{ color:#FF8573; }
   .kicker::before{ content:''; width:16px; height:2px; background:currentColor; }
 
   .headline{
-    font-weight:900; letter-spacing:-.02em; line-height:1.05; margin:0;
-    font-size:clamp(24px,4.4vw,40px); max-width:12ch;
+    font-weight:900; letter-spacing:-.03em; line-height:1.18; margin:0;
+    font-size:clamp(26px,4.8vw,44px); max-width:15ch;
   }
   .headline .accent{ color:var(--red); }
-  .slide.blueprint .headline .accent{ color:#8FB3FF; }
-  .subhead{ font-weight:900; letter-spacing:-.015em; line-height:1.1; margin:0; font-size:clamp(20px,3.2vw,30px); max-width:16ch; }
+  .slide.blueprint .headline .accent{ color:#A8C5FF; }
+  .subhead{ font-weight:900; letter-spacing:-.025em; line-height:1.2; margin:0; font-size:clamp(22px,3.6vw,34px); max-width:18ch; }
 
   .caption{
-    font-size:clamp(13px,1.6vw,15.5px); line-height:1.5; max-width:52ch; color:var(--muted);
+    font-size:clamp(14px,1.7vw,17px); line-height:1.55; max-width:54ch; color:var(--muted);
     opacity:0; transform:translateY(6px); transition:opacity .5s ease .15s, transform .5s ease .15s;
   }
   .slide.dark .caption{ color:var(--dark-muted); }
-  .slide.blueprint .caption{ color:#B9CBFF; }
+  .slide.blueprint .caption{ color:#D6E2FF; }
   .slide.active .caption{ opacity:1; transform:translateY(0); }
 
   .feature-sentence{
-    font-weight:700; letter-spacing:-.01em; line-height:1.28; margin:0; color:var(--ink);
-    font-size:clamp(17px,2.4vw,22px); max-width:34ch;
+    font-weight:800; letter-spacing:-.02em; line-height:1.32; margin:0; color:var(--ink);
+    font-size:clamp(18px,2.6vw,24px); max-width:36ch;
   }
 
   /* feature dot rail */
@@ -139,7 +140,7 @@
   }
   .hook-stage.collide .app-chip{
     animation:none;
-    transition:left .75s cubic-bezier(.32,.78,.4,1.15), top .75s cubic-bezier(.32,.78,.4,1.15), transform .75s cubic-bezier(.32,.78,.4,1.15);
+    transition:left .75s var(--ease-tempo), top .75s var(--ease-tempo), transform .75s var(--ease-tempo);
     left:50%; top:50%;
   }
   .hook-stage.collide .chip-task{ transform:translate(-96%,-96%) rotate(-13deg) scale(.92); }
@@ -233,7 +234,7 @@
   /* feature 3: habit grid */
   .habit-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:6px; width:min(300px,70%); margin:0 auto; }
   .habit-cell{ aspect-ratio:1; border:1.5px solid var(--line); border-radius:3px; opacity:0; transform:scale(.4); }
-  .slide.active .habit-cell{ animation:cellFill .35s ease forwards; animation-delay:calc(.15s + var(--i) * 55ms); }
+  .slide.active .habit-cell{ animation:cellFill .35s var(--ease-tempo) forwards; animation-delay:calc(.15s + var(--i) * 55ms); }
   @keyframes cellFill{ to{ opacity:1; transform:scale(1);} }
   .habit-cell.on{ background:var(--blue); border-color:var(--blue); }
 
@@ -348,19 +349,111 @@
 
   /* poster / initial play overlay */
   .poster{
-    position:absolute; inset:0; z-index:15; display:flex; align-items:center; justify-content:center;
-    background:rgba(15,17,20,.28); cursor:pointer; transition:opacity .3s ease;
+    position:absolute; inset:0; z-index:15; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background:var(--dark); cursor:pointer; transition:opacity .35s ease;
+    padding:clamp(20px, 4vw, 44px); text-align:center; overflow:hidden;
   }
   .poster.hidden{ opacity:0; pointer-events:none; }
-  .poster-btn{
-    width:64px; height:64px; border-radius:50%; background:rgba(255,255,255,.94); border:none;
-    display:flex; align-items:center; justify-content:center; color:var(--ink); cursor:pointer;
-    box-shadow:0 12px 30px rgba(0,0,0,.35);
+
+  .poster-bg-chips{
+    position:absolute; inset:0; pointer-events:none; overflow:hidden; opacity:.24;
+    display:flex; align-items:center; justify-content:center;
   }
-  .poster-btn svg{ width:22px; height:22px; margin-left:3px; }
+  .poster-chip-cluster{
+    position:relative; width:360px; height:220px;
+  }
+  .poster-chip-cluster .poster-chip{
+    position:absolute; padding:8px 16px; font-family:var(--font-mono); font-size:12px; font-weight:700;
+    background:var(--paper); color:var(--ink); border:1.5px solid #FFFFFF;
+    box-shadow:4px 4px 0 0 rgba(255,255,255,.2); white-space:nowrap;
+  }
+  .poster-chip-cluster .p-task{ top:8%; left:6%; transform:rotate(-9deg); }
+  .poster-chip-cluster .p-cal{ top:6%; right:5%; transform:rotate(8deg); }
+  .poster-chip-cluster .p-habit{ bottom:10%; left:4%; transform:rotate(6deg); }
+  .poster-chip-cluster .p-timer{ bottom:8%; right:6%; transform:rotate(-7deg); }
+  .poster-chip-cluster .poster-mark{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:34px; height:34px; background:var(--red); color:#FFFFFF; font-weight:900;
+    display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:18px;
+    box-shadow:3px 3px 0 0 rgba(0,0,0,.5);
+  }
+
+  .poster-content{
+    position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; text-align:center; gap:6px; max-width:620px;
+  }
+  .poster-title{
+    font-family:var(--font-head); font-weight:900; font-size:clamp(46px, 7.5vw, 78px);
+    letter-spacing:-.035em; color:#FFFFFF; margin:0; line-height:1;
+  }
+  .poster-subtitle{
+    font-family:var(--font-head); font-size:clamp(15px, 2.2vw, 20px); font-weight:500;
+    color:var(--dark-muted); margin:6px 0 16px; line-height:1.4; max-width:46ch;
+  }
+  .poster-play-badge{
+    display:inline-flex; align-items:center; gap:14px; background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.18); padding:8px 22px 8px 10px; border-radius:40px;
+    backdrop-filter:blur(8px); transition:all .25s var(--ease-tempo);
+  }
+  .poster:hover .poster-play-badge{
+    background:rgba(255,255,255,.16); border-color:rgba(255,255,255,.36); transform:scale(1.04);
+  }
+  .poster-btn{
+    width:42px; height:42px; border-radius:50%; background:var(--red); border:none;
+    display:flex; align-items:center; justify-content:center; color:#FFFFFF; cursor:pointer;
+    box-shadow:0 4px 16px rgba(224,64,44,.45); transition:transform .2s var(--ease-tempo), background .2s ease;
+    flex-shrink:0;
+  }
+  .poster:hover .poster-btn{ transform:scale(1.08); background:#FF4F38; }
+  .poster-play-text{
+    font-family:var(--font-mono); font-size:12px; font-weight:700; letter-spacing:.16em;
+    color:#FFFFFF; text-transform:uppercase;
+  }
 
   @media (prefers-reduced-motion:reduce){
     *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+  }
+
+  /* ================= CAPTURE MODE ================= */
+  body.capture-mode {
+    background: #000000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 0 !important;
+    min-height: 100vh !important;
+    height: 100vh !important;
+    width: 100vw !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  body.capture-mode .page-head {
+    display: none !important;
+  }
+  body.capture-mode .stage-wrap {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  body.capture-mode .stage {
+    width: min(100vw, 177.77777778vh) !important;
+    height: min(100vh, 56.25vw) !important;
+    aspect-ratio: 16 / 9 !important;
+    max-width: none !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    outline: none !important;
+  }
+  body.capture-mode .controls,
+  body.capture-mode .poster {
+    display: none !important;
   }
 </style>
 </head>
@@ -457,13 +550,13 @@
     <h2 class="subhead" style="color:var(--bg);">One developer. No team. No funding.</h2>
     <div style="display:flex; gap:22px; align-items:center;">
       <div style="width:3px; align-self:stretch; background:var(--dark-line); border-radius:2px; position:relative; min-height:130px;" id="buildRail">
-        <div id="buildRailFill" style="position:absolute; left:0; top:0; width:100%; height:0%; background:#FF6E56; border-radius:2px; transition:height 4.6s linear;"></div>
+        <div id="buildRailFill" style="position:absolute; left:0; top:0; width:100%; height:0%; background:#FF8573; border-radius:2px; transition:height 4.6s var(--ease-tempo);"></div>
       </div>
       <div style="display:flex; flex-direction:column; gap:14px;">
-        <div class="build-beat" data-i="0" style="opacity:0; font-size:14px; color:var(--dark-muted); transition:opacity .5s ease, color .3s ease;">The idea.</div>
-        <div class="build-beat" data-i="1" style="opacity:0; font-size:14px; color:var(--dark-muted); transition:opacity .5s ease, color .3s ease;">V1 — rough, barely working.</div>
-        <div class="build-beat" data-i="2" style="opacity:0; font-size:14px; color:var(--dark-muted); transition:opacity .5s ease, color .3s ease;">The rebuild.</div>
-        <div class="build-beat" data-i="3" style="opacity:0; font-size:14px; color:var(--dark-muted); transition:opacity .5s ease, color .3s ease;">V20 of the same button.</div>
+        <div class="build-beat" data-i="0" style="opacity:0; font-size:14px; color:var(--dark-muted); transition:opacity .5s var(--ease-tempo), color .3s var(--ease-tempo);">The idea.</div>
+        <div class="build-beat" data-i="1" style="opacity:0; font-size:14px; color:var(--dark-muted); transition:opacity .5s var(--ease-tempo), color .3s var(--ease-tempo);">V1 — rough, barely working.</div>
+        <div class="build-beat" data-i="2" style="opacity:0; font-size:14px; color:var(--dark-muted); transition:opacity .5s var(--ease-tempo), color .3s var(--ease-tempo);">The rebuild.</div>
+        <div class="build-beat" data-i="3" style="opacity:0; font-size:14px; color:var(--dark-muted); transition:opacity .5s var(--ease-tempo), color .3s var(--ease-tempo);">V20 of the same button.</div>
       </div>
     </div>
     <p class="caption"></p>
@@ -642,7 +735,27 @@
   </div>
 
   <div class="poster" id="poster">
-    <button class="poster-btn" id="posterBtn" aria-label="Play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z" fill="currentColor"/></svg></button>
+    <div class="poster-bg-chips" aria-hidden="true">
+      <div class="poster-chip-cluster">
+        <div class="poster-chip p-task">Tasks</div>
+        <div class="poster-chip p-cal">Calendar</div>
+        <div class="poster-chip p-habit">Habits</div>
+        <div class="poster-chip p-timer">Timer</div>
+        <div class="poster-mark">+</div>
+      </div>
+    </div>
+
+    <div class="poster-content">
+      <div class="kicker" style="justify-content:center; margin-bottom:8px;">SYSTEM OVERVIEW</div>
+      <h1 class="poster-title">Tempo</h1>
+      <p class="poster-subtitle">One continuous surface for tasks, calendar, habits, and time.</p>
+      <div class="poster-play-badge">
+        <button class="poster-btn" id="posterBtn" aria-label="Play video">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M6 4l14 8-14 8V4z" fill="currentColor"/></svg>
+        </button>
+        <span class="poster-play-text">WATCH EXPLAINER</span>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -687,7 +800,12 @@
       const stage = el.querySelector(stageSelector);
       if(!stage) return null;
       stage.classList.remove('collide');
-      const t = setTimeout(()=> stage.classList.add('collide'), Math.max(1400, dur*0.58));
+      // Sync collision burst to narrator emphasis points:
+      // Slide 0 (#hookStage): "Four systems, before the real work..." -> ~5,800ms (dur * 0.50)
+      // Slide 10 (#closeStage): "...collapse into one surface." -> ~4,200ms (dur * 0.46)
+      const ratio = stageSelector === '#closeStage' ? 0.46 : 0.50;
+      const delay = Math.round((dur || 11500) * ratio);
+      const t = setTimeout(()=> stage.classList.add('collide'), delay);
       return ()=> clearTimeout(t);
     };
   }
@@ -699,21 +817,30 @@
     if(fill){ fill.style.transition='none'; fill.style.height='0%'; }
     void el.offsetWidth;
     const timers = [];
-    const step = Math.max(900, (dur-1200)/4);
+    const totalDur = dur || 11500;
+
+    // Spoken phrase emphasis offsets:
+    // Beat 0: "Just an idea..." (~3,200ms / dur*0.28)
+    // Beat 1: "A rough first version..." (~5,300ms / dur*0.46)
+    // Beat 2: "Then a rebuild." (~7,200ms / dur*0.63)
+    // Beat 3: "Then, quietly, a twentieth version..." (~8,800ms / dur*0.77)
+    const beatOffsets = [0.28, 0.46, 0.63, 0.77];
+
     beats.forEach((b,i)=>{
       timers.push(setTimeout(()=>{
-        b.style.transition='opacity .5s ease, color .3s ease';
+        b.style.transition='opacity .5s var(--ease-tempo), color .3s var(--ease-tempo)';
         b.style.opacity='1';
         b.style.color='#fff';
-      }, 500 + i*step));
+      }, Math.round(totalDur * beatOffsets[i])));
     });
+
     if(fill){
-      requestAnimationFrame(()=>{
-        fill.style.transition = `height ${dur-400}ms linear`;
+      timers.push(setTimeout(()=>{
+        fill.style.transition = `height ${Math.round(totalDur * 0.60)}ms var(--ease-tempo)`;
         fill.style.height='100%';
-      });
+      }, Math.round(totalDur * 0.22)));
     }
-    return ()=> timers.forEach(clearTimeout);
+    return ()=> timers.forEach(t=> clearTimeout(t));
   }
 
   function cmdkOnEnter(el, dur){
@@ -722,6 +849,7 @@
     const phrases = ['Add task: Draft Q3 report','Start focus — 25m','Jump to Thursday'];
     let phraseIdx=0, charIdx=0, timer=null, stopped=false;
     typedEl.textContent='';
+
     function step(){
       if(stopped) return;
       const phrase = phrases[phraseIdx];
@@ -742,20 +870,31 @@
         }, 650);
       }
     }
-    step();
-    return ()=>{ stopped=true; clearTimeout(timer); };
+
+    // Delay typing start until narrator introduces "command palette. Press Command-K..." (~dur * 0.50 / ~7,100ms)
+    const startDelay = Math.round((dur || 14200) * 0.50);
+    const startTimer = setTimeout(step, startDelay);
+
+    return ()=>{ stopped=true; clearTimeout(startTimer); clearTimeout(timer); };
   }
 
-  function habitOnEnter(el){
+  function habitOnEnter(el, dur){
     const grid = el.querySelector('#habitGrid');
     grid.innerHTML='';
     const pattern = [1,1,0,1,1,1,0, 1,0,1,1,1,1,0, 1,1,1,0,1,1,1];
-    pattern.forEach((on,i)=>{
-      const c = document.createElement('div');
-      c.className = 'habit-cell' + (on ? ' on' : '');
-      c.style.setProperty('--i', i);
-      grid.appendChild(c);
-    });
+    // Sync grid reveal to "Just a quiet, honest record of whether you showed up" (~dur * 0.40 / ~2,800ms)
+    const startDelay = Math.round((dur || 7000) * 0.40);
+
+    const timer = setTimeout(()=>{
+      pattern.forEach((on,i)=>{
+        const c = document.createElement('div');
+        c.className = 'habit-cell' + (on ? ' on' : '');
+        c.style.setProperty('--i', i);
+        grid.appendChild(c);
+      });
+    }, startDelay);
+
+    return () => clearTimeout(timer);
   }
 
   const SLIDES = [
@@ -929,11 +1068,24 @@
     SLIDES[i].el.classList.add('active');
   }
 
-  function runWipe(cb){
+  function getSlideType(idx){
+    if(idx < 0 || idx >= SLIDES.length) return 'light';
+    const el = SLIDES[idx].el;
+    if(el.classList.contains('dark')) return 'dark';
+    if(el.classList.contains('blueprint')) return 'blueprint';
+    return 'light';
+  }
+
+  function runWipe(prevIdx, nextIdx, cb){
+    const isCrossType = (prevIdx >= 0 && prevIdx !== nextIdx) && (getSlideType(prevIdx) !== getSlideType(nextIdx));
+    const dur = isCrossType ? 600 : 350;
+    const halfDur = Math.round(dur / 2);
+
+    wipeEl.style.animationDuration = dur + 'ms';
     wipeEl.classList.remove('run');
     void wipeEl.offsetWidth;
     wipeEl.classList.add('run');
-    setTimeout(cb, 250);
+    setTimeout(cb, halfDur);
   }
 
   function goTo(i){
@@ -941,12 +1093,13 @@
     if(cleanupFn){ cleanupFn(); cleanupFn = null; }
     narrationAudio.pause();
 
+    const prevIdx = current;
     current = i;
     counterEl.textContent = (i+1)+' / '+SLIDES.length;
     fillBefore(i);
     resetFrom(i);
 
-    runWipe(()=>{
+    runWipe(prevIdx, i, ()=>{
       activateDOM(i);
       const s = SLIDES[i];
       const caption = s.el.querySelector('.caption');
@@ -1052,6 +1205,7 @@
 
   playBtn.addEventListener('click', ()=>{ playing ? pause() : play(); });
   posterBtn.addEventListener('click', play);
+  posterEl.addEventListener('click', play);
   prevBtn.addEventListener('click', ()=> userGoTo(Math.max(0, (current<0?0:current)-1)));
   nextBtn.addEventListener('click', ()=> userGoTo(Math.min(SLIDES.length-1, (current<0?-1:current)+1)));
   muteBtn.addEventListener('click', ()=>{
@@ -1076,6 +1230,19 @@
   // initial poster frame: show slide 0 statically
   SLIDES[0].el.classList.add('active');
   counterEl.textContent = '1 / '+SLIDES.length;
+
+  // Capture mode detection (?capture=1 or ?capture=true or ?capture)
+  const urlParams = new URLSearchParams(window.location.search);
+  const isCaptureMode = urlParams.has('capture') && urlParams.get('capture') !== '0' && urlParams.get('capture') !== 'false';
+
+  if (isCaptureMode) {
+    document.body.classList.add('capture-mode');
+    posterEl.classList.add('hidden');
+    // Auto-start playback on load
+    setTimeout(() => {
+      play();
+    }, 150);
+  }
 })();
 </script>
 
